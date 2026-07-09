@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BS AI Business Intelligence Platform</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+:root{--bg:#08090e;--panel:#121521;--panel2:#191d2b;--line:#2b3042;--gold:#e5bf5c;--gold2:#9b7624;--txt:#f7f2e8;--muted:#b8b4ad;--green:#54d38a;--red:#ff6e6e;--blue:#74a7ff}
+*{box-sizing:border-box}body{margin:0;font-family:Cairo,Arial,sans-serif;background:radial-gradient(circle at 10% 0,#171a27 0,#08090e 45%,#06060a 100%);color:var(--txt)}
+header{padding:24px 48px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;position:sticky;top:0;background:rgba(8,9,14,.92);backdrop-filter:blur(10px);z-index:5}
+h1{margin:0;color:var(--gold);font-size:34px;font-weight:900;letter-spacing:.5px}.sub{color:var(--muted);margin-top:4px;font-size:15px}.logo{width:82px;height:82px;border-radius:24px;background:linear-gradient(145deg,#fff0aa,#c99a32);color:#08090e;display:grid;place-items:center;font-weight:900;font-size:32px;box-shadow:0 16px 45px #0008}
+main{padding:28px 48px 60px}.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;justify-content:flex-start}.btn{border:0;border-radius:16px;padding:13px 20px;font-family:Cairo;font-weight:800;cursor:pointer;color:#0b0b0d;background:linear-gradient(145deg,#f3d577,#c99a32);box-shadow:0 8px 25px #0005}.btn.dark{background:#242739;color:#fff}.btn.red{background:#982b2b;color:#fff}.btn.green{background:#1f7d4d;color:#fff}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}.card{background:linear-gradient(180deg,rgba(25,29,43,.95),rgba(14,16,25,.95));border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 45px #0005}.card h2{margin:0 0 14px;font-size:27px}.small{color:var(--muted);font-size:14px}.templates{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.template{border:1px solid var(--line);background:#0d101b;color:#fff;border-radius:16px;padding:14px;cursor:pointer;font-weight:800}.template.active{border-color:var(--gold);box-shadow:0 0 0 2px #e5bf5c44}.inputs{display:grid;grid-template-columns:repeat(5,1fr) 88px;gap:10px;align-items:end}.field label{display:block;color:var(--gold);font-weight:700;margin-bottom:6px}.field input,.field select{width:100%;padding:13px 12px;border-radius:14px;border:1px solid #34394d;background:#090b12;color:#fff;font-family:Cairo;font-weight:700}table{width:100%;border-collapse:collapse;margin-top:18px;overflow:hidden;border-radius:18px}th,td{border-bottom:1px solid var(--line);padding:12px;text-align:right}th{color:var(--gold);background:#1a1d2a}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}.kpi{background:#101421;border:1px solid var(--line);border-radius:20px;padding:18px}.kpi span{color:var(--muted);font-size:13px}.kpi b{display:block;font-size:25px;margin-top:5px}.charts{display:grid;grid-template-columns:1fr 1fr;gap:20px}.insight{line-height:1.95;font-size:16px}.good{color:var(--green);font-weight:900}.warn{color:var(--red);font-weight:900}.blue{color:var(--blue);font-weight:900}.footer{margin-top:20px;color:var(--muted);text-align:center}@media(max-width:1000px){header{padding:20px}main{padding:20px}.grid,.charts{grid-template-columns:1fr}.inputs,.kpis{grid-template-columns:1fr 1fr}.templates{grid-template-columns:1fr 1fr}h1{font-size:25px}}@media(max-width:640px){.inputs,.kpis,.templates{grid-template-columns:1fr}.logo{width:64px;height:64px}.toolbar{justify-content:center}}
+@media print{body{background:#fff;color:#111}header,.toolbar,.data-entry,.actions{display:none!important}.card{box-shadow:none;border:0;background:#fff;color:#111}.grid,.charts{display:block}.kpi{border:1px solid #ddd;color:#111}main{padding:20px}h1,h2,th{color:#8a651c}.report-only{display:block!important}}
+.report-only{display:none}
+</style>
+</head>
+<body>
+<header>
+ <div><h1>BS AI Business Intelligence Platform</h1><div class="sub">منصة ذكاء أعمال عربية: إدخال بيانات + مؤشرات + رسوم + توصيات + تقرير PDF</div></div>
+ <div class="logo">BS</div>
+</header>
+<main>
+ <div class="toolbar actions">
+  <button class="btn" onclick="addRow()">+ إضافة سجل</button>
+  <button class="btn dark" onclick="loadDemo()">استخدام بيانات تجريبية</button>
+  <button class="btn green" onclick="analyze()">تحليل البيانات</button>
+  <button class="btn" onclick="saveProject()">حفظ المشروع</button>
+  <button class="btn dark" onclick="loadProject()">فتح المحفوظ</button>
+  <button class="btn red" onclick="clearAll()">مسح البيانات</button>
+  <button class="btn" onclick="window.print()">تحميل تقرير PDF</button>
+ </div>
+ <div class="grid">
+  <section class="card data-entry">
+   <h2>1) اختيار نوع النشاط</h2>
+   <div class="small">اختاري القالب المناسب، وسيتم استخدامه في التحليل والتوصيات.</div>
+   <div class="templates" id="templates"></div>
+   <h2>2) إدخال البيانات</h2>
+   <div class="small">القيمة = الإيراد أو التكلفة أو درجة الأداء. الوقت بالدقائق لحساب الإنتاجية.</div>
+   <div class="inputs">
+    <div class="field"><label id="itemLabel">العنصر</label><input id="item" placeholder="مثال: قهوة عربية"></div>
+    <div class="field"><label>القسم</label><select id="dept"><option>المبيعات</option><option>الإنتاج</option><option>التسويق</option><option>خدمة العملاء</option></select></div>
+    <div class="field"><label>الكمية</label><input id="qty" type="number" value="1"></div>
+    <div class="field"><label>القيمة</label><input id="value" type="number" value="100"></div>
+    <div class="field"><label>الوقت بالدقائق</label><input id="mins" type="number" value="30"></div>
+    <button class="btn" onclick="addRow()">إدخال</button>
+   </div>
+   <table><thead><tr><th>العنصر</th><th>القسم</th><th>الكمية</th><th>القيمة</th><th>الوقت</th><th>إجراء</th></tr></thead><tbody id="tbody"></tbody></table>
+  </section>
+  <section class="card">
+   <h2>الرؤى الذكية</h2>
+   <div id="insights" class="insight">أدخلي بيانات أو استخدمي البيانات التجريبية ثم اضغطي تحليل البيانات.</div>
+  </section>
+ </div>
+ <section class="card" style="margin-top:22px">
+  <h2>Dashboard مؤشرات الأداء</h2>
+  <div class="kpis">
+   <div class="kpi"><span>إجمالي القيمة</span><b id="kValue">0</b></div>
+   <div class="kpi"><span>إجمالي الكمية</span><b id="kQty">0</b></div>
+   <div class="kpi"><span>متوسط الإنتاجية</span><b id="kProd">0</b></div>
+   <div class="kpi"><span>أفضل قسم</span><b id="kBest">-</b></div>
+  </div>
+  <div class="charts">
+   <div><canvas id="barChart"></canvas></div>
+   <div><canvas id="pieChart"></canvas></div>
+  </div>
+ </section>
+ <section class="card report-only" style="margin-top:22px"><h2>ملخص التقرير</h2><div id="printSummary"></div></section>
+ <div class="footer">BS AI Business Intelligence Platform — Local Demo Version</div>
+</main>
+<script>
+const templates=[['sales','مبيعات','المنتج'],['cafe','كافيتريا','الصنف'],['employees','موظفون','الموظف/المهمة'],['inventory','مخزون','المادة'],['clinic','عيادة','الخدمة'],['school','مدرسة','النشاط']];
+let current='sales', rows=[], bar=null, pie=null;
+function renderTemplates(){document.getElementById('templates').innerHTML=templates.map(t=>`<button class="template ${t[0]===current?'active':''}" onclick="setTemplate('${t[0]}')">${t[1]}</button>`).join('')}
+function setTemplate(id){current=id; let t=templates.find(x=>x[0]===id); document.getElementById('itemLabel').textContent=t[2]; renderTemplates(); analyze()}
+function addRow(){let r={item:item.value.trim()||'عنصر جديد',dept:dept.value,qty:+qty.value||0,value:+value.value||0,mins:+mins.value||1}; rows.push(r); renderRows(); analyze()}
+function delRow(i){rows.splice(i,1);renderRows();analyze()}
+function renderRows(){tbody.innerHTML=rows.map((r,i)=>`<tr><td>${r.item}</td><td>${r.dept}</td><td>${r.qty}</td><td>${r.value}</td><td>${r.mins}</td><td><button class="btn red" onclick="delRow(${i})">حذف</button></td></tr>`).join('')}
+function loadDemo(){rows=[{item:'قهوة عربية',dept:'المبيعات',qty:18,value:450,mins:120},{item:'شاي كرك',dept:'المبيعات',qty:30,value:300,mins:90},{item:'إعلان إنستغرام',dept:'التسويق',qty:4,value:800,mins:180},{item:'ردود العملاء',dept:'خدمة العملاء',qty:42,value:650,mins:210},{item:'تجهيز الطلبات',dept:'الإنتاج',qty:25,value:550,mins:160}];renderRows();analyze()}
+function clearAll(){rows=[];renderRows();analyze()}
+function groupByDept(){let g={}; rows.forEach(r=>{g[r.dept]=(g[r.dept]||0)+r.value}); return g}
+function analyze(){let totalV=rows.reduce((s,r)=>s+r.value,0), totalQ=rows.reduce((s,r)=>s+r.qty,0), totalM=rows.reduce((s,r)=>s+r.mins,0); let prod=totalM? (totalQ/(totalM/60)):0; let g=groupByDept(); let best=Object.entries(g).sort((a,b)=>b[1]-a[1])[0]?.[0]||'-'; kValue.textContent='AED '+totalV.toLocaleString(); kQty.textContent=totalQ.toLocaleString(); kProd.textContent=prod.toFixed(2); kBest.textContent=best; drawCharts(g); makeInsights(totalV,totalQ,totalM,prod,best)}
+function makeInsights(v,q,m,p,b){let maxTime=rows.slice().sort((a,b)=>b.mins-a.mins)[0];let maxItem=rows.slice().sort((a,b)=>b.value-a.value)[0];let low=rows.filter(r=>r.mins>120).length; insights.innerHTML=rows.length?`<b>ملخص:</b> إجمالي القيمة <b>${v.toLocaleString()}</b>، إجمالي الكمية <b>${q}</b>، ومتوسط الإنتاجية <b>${p.toFixed(2)}</b> وحدة لكل ساعة.<br><span class="good">نقطة قوة:</span> أفضل قسم حاليًا هو <b>${b}</b>، وأعلى عنصر قيمة هو <b>${maxItem.item}</b>.<br><span class="blue">توصية:</span> ركزي الموارد على العناصر الأعلى قيمة، وراجعي العمليات ذات الوقت الطويل لرفع الإنتاجية.<br>${low?`<span class="warn">تنبيه:</span> يوجد ${low} سجل استغرق أكثر من 120 دقيقة. يفضل مراجعة سبب البطء.`:''}<br><b>قرار مقترح:</b> إنشاء متابعة أسبوعية لمؤشر الإنتاجية، ومقارنة الأقسام لمعرفة فرص التحسين.`:'لا توجد بيانات للتحليل.'; printSummary.innerHTML=insights.innerHTML}
+function drawCharts(g){let labels=Object.keys(g), data=Object.values(g); if(bar)bar.destroy(); if(pie)pie.destroy(); bar=new Chart(document.getElementById('barChart'),{type:'bar',data:{labels,datasets:[{label:'القيمة حسب القسم',data}]},options:{responsive:true,plugins:{legend:{labels:{color:'#fff'}}},scales:{x:{ticks:{color:'#fff'}},y:{ticks:{color:'#fff'}}}}}); pie=new Chart(document.getElementById('pieChart'),{type:'doughnut',data:{labels,datasets:[{label:'توزيع القيمة',data}]},options:{responsive:true,plugins:{legend:{labels:{color:'#fff'}}}}})}
+function saveProject(){localStorage.setItem('bs_bi_rows',JSON.stringify(rows)); alert('تم حفظ المشروع على هذا الجهاز')}
+function loadProject(){rows=JSON.parse(localStorage.getItem('bs_bi_rows')||'[]'); renderRows(); analyze(); alert('تم فتح البيانات المحفوظة')}
+renderTemplates(); loadDemo();
+</script>
+</body></html>
