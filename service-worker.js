@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bs-bi-platform-v2-1-cinematic-abu-dhabi';
+const CACHE_NAME = 'bs-bi-platform-v2-1-1-responsive-fix';
 const CORE_ASSETS = [
   '/',
   '/index.html',
