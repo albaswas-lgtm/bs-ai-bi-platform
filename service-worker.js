@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bs-bi-platform-v2-1-1-responsive-fix';
+const CACHE_NAME = 'bs-bi-platform-v2-2-organized-workspace';
 const CORE_ASSETS = [
   '/',
   '/index.html',
