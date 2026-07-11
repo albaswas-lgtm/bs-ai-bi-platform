@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bs-bi-platform-v2-3-install-guide-fix';
+const CACHE_NAME = 'bs-bi-platform-v2-3-neutral-install-copy';
 const CORE_ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', event => {
@@ -36,7 +36,7 @@ body.presentation #bsPresentationToolbar{display:flex}#bsPresentationToolbar but
 <div id="bsSaveModal" role="dialog" aria-modal="true" aria-labelledby="bsSaveTitle">
   <div class="bs-save-card">
     <h3 id="bsSaveTitle">كيف تريد حفظ المشروع؟</h3>
-    <p>اختَر مكان الحفظ المناسب. لن يتم حفظ أو تنزيل أي شيء قبل اختيارك.</p>
+    <p>اختر مكان الحفظ المناسب. لن يتم حفظ أو تنزيل أي شيء قبل اختيارك.</p>
     <div class="bs-save-options">
       <button class="bs-save-option" id="bsSaveDevice"><span class="bs-save-icon">💾</span><span><strong>حفظ داخل التطبيق على هذا الجهاز</strong><span>يبقى المشروع محفوظًا في هذا المتصفح ويمكن فتحه لاحقًا.</span></span></button>
       <button class="bs-save-option" id="bsSaveFile"><span class="bs-save-icon">📁</span><span><strong>اختيار مكان وحفظ نسخة احتياطية</strong><span>تنزيل ملف المشروع إلى المكان الذي تختاره على الجهاز.</span></span></button>
@@ -47,10 +47,10 @@ body.presentation #bsPresentationToolbar{display:flex}#bsPresentationToolbar but
 <div id="bsInstallModal" role="dialog" aria-modal="true" aria-labelledby="bsInstallTitle">
   <div class="bs-install-card">
     <h3 id="bsInstallTitle">تثبيت التطبيق</h3>
-    <p id="bsInstallIntro">اتّبعي الخطوات التالية لتثبيت المنصة.</p>
+    <p id="bsInstallIntro">اتبع الخطوات التالية لتثبيت المنصة.</p>
     <div class="bs-install-steps" id="bsInstallSteps"></div>
     <div class="bs-install-note" id="bsInstallNote"></div>
-    <button class="bs-install-close" id="bsInstallClose">فهمت</button>
+    <button class="bs-install-close" id="bsInstallClose">استمرار</button>
   </div>
 </div>
 <div id="bsToast"></div>
@@ -66,25 +66,26 @@ body.presentation #bsPresentationToolbar{display:flex}#bsPresentationToolbar but
   function isStandalone(){return window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true}
   function isInAppBrowser(){return /FBAN|FBAV|Instagram|Line|WhatsApp/i.test(navigator.userAgent)}
   function renderInstallGuide(){
-    var steps=document.getElementById('bsInstallSteps'),note=document.getElementById('bsInstallNote'),title=document.getElementById('bsInstallTitle'),intro=document.getElementById('bsInstallIntro');
-    if(!steps||!note||!title||!intro)return;
+    var steps=document.getElementById('bsInstallSteps'),note=document.getElementById('bsInstallNote'),title=document.getElementById('bsInstallTitle'),intro=document.getElementById('bsInstallIntro'),closeBtn=document.getElementById('bsInstallClose');
+    if(!steps||!note||!title||!intro||!closeBtn)return;
+    closeBtn.textContent=currentLang()==='ar'?'استمرار':'Continue';
     if(isStandalone()){closeInstallModal();showToast(currentLang()==='ar'?'التطبيق مثبت بالفعل':'The app is already installed');return}
     if(isIOS()){
       title.textContent=currentLang()==='ar'?'تثبيت التطبيق على iPhone':'Install on iPhone';
-      intro.textContent=currentLang()==='ar'?'اتّبعي الخطوات التالية لإضافة المنصة إلى الشاشة الرئيسية.':'Follow these steps to add the platform to your Home Screen.';
-      var list=currentLang()==='ar'?['افتحي الرابط في Safari مباشرة.','اضغطي زر المشاركة ⬆️ في أسفل الشاشة.','اختاري «إضافة إلى الشاشة الرئيسية».','اضغطي «إضافة» لإتمام التثبيت.']:['Open the link directly in Safari.','Tap the Share button ⬆️ at the bottom.','Choose “Add to Home Screen”.','Tap “Add” to finish.'];
+      intro.textContent=currentLang()==='ar'?'اتبع الخطوات التالية لإضافة المنصة إلى الشاشة الرئيسية.':'Follow these steps to add the platform to your Home Screen.';
+      var list=currentLang()==='ar'?['افتح الرابط في Safari مباشرة.','اضغط زر المشاركة ⬆️ في أسفل الشاشة.','اختر «إضافة إلى الشاشة الرئيسية».','اضغط «إضافة» لإتمام التثبيت.']:['Open the link directly in Safari.','Tap the Share button ⬆️ at the bottom.','Choose “Add to Home Screen”.','Tap “Add” to finish.'];
       steps.innerHTML=list.map(function(s,i){return '<div class="bs-install-step"><b>'+(i+1)+'</b><span>'+s+'</span></div>'}).join('');
       note.textContent=currentLang()==='ar'?'على iPhone لا يستطيع الموقع فتح نافذة التثبيت تلقائيًا؛ هذه قيود من نظام iOS وليست مشكلة في التطبيق.':'On iPhone, websites cannot open the install prompt automatically. This is an iOS limitation, not an app error.';
     }else{
       title.textContent=currentLang()==='ar'?'تثبيت التطبيق':'Install the app';
-      intro.textContent=currentLang()==='ar'?'افتحي قائمة المتصفح ثم اختاري تثبيت التطبيق أو إضافته إلى الشاشة الرئيسية.':'Open the browser menu and choose Install app or Add to Home Screen.';
-      steps.innerHTML='<div class="bs-install-step"><b>1</b><span>'+(currentLang()==='ar'?'افتحي قائمة المتصفح ⋮ أو زر المشاركة.':'Open the browser menu ⋮ or Share button.')+'</span></div><div class="bs-install-step"><b>2</b><span>'+(currentLang()==='ar'?'اختاري «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».':'Choose “Install app” or “Add to Home Screen”.')+'</span></div>';
+      intro.textContent=currentLang()==='ar'?'افتح قائمة المتصفح ثم اختر تثبيت التطبيق أو إضافته إلى الشاشة الرئيسية.':'Open the browser menu and choose Install app or Add to Home Screen.';
+      steps.innerHTML='<div class="bs-install-step"><b>1</b><span>'+(currentLang()==='ar'?'افتح قائمة المتصفح ⋮ أو زر المشاركة.':'Open the browser menu ⋮ or Share button.')+'</span></div><div class="bs-install-step"><b>2</b><span>'+(currentLang()==='ar'?'اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».':'Choose “Install app” or “Add to Home Screen”.')+'</span></div>';
       note.textContent=isInAppBrowser()?(currentLang()==='ar'?'يفضل فتح الرابط في Safari أو Chrome بدل المتصفح الداخلي في تطبيقات المحادثة.':'Open the link in Safari or Chrome instead of an in-app browser.'):(currentLang()==='ar'?'قد يختلف اسم الخيار قليلًا حسب المتصفح.':'The option name may vary slightly by browser.');
     }
     document.getElementById('bsInstallModal').classList.add('open');
   }
   function projectPayload(){return {app:'BS AI Business Intelligence Platform',version:'2.3',savedAt:new Date().toISOString(),project:window.project||project,rows:window.rows||rows}}
-  async function saveBackupFile(){var data=JSON.stringify(projectPayload(),null,2);var name=((window.project||project).name||'bs-project').replace(/[^a-zA-Z0-9\u0600-\u06FF_-]+/g,'-');var filename=name+'-backup.json';try{if(window.showSaveFilePicker){var handle=await window.showSaveFilePicker({suggestedName:filename,types:[{description:'BS Project Backup',accept:{'application/json':['.json']}}]});var writable=await handle.createWritable();await writable.write(data);await writable.close()}else{var blob=new Blob([data],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000)}closeSaveModal();showToast(currentLang()==='ar'?'تم حفظ النسخة الاحتياطية بنجاح':'Backup saved successfully')}catch(error){if(error&&error.name!=='AbortError')showToast(currentLang()==='ar'?'تعذر حفظ الملف. حاولي مرة أخرى.':'Could not save the file. Please try again.')}}
+  async function saveBackupFile(){var data=JSON.stringify(projectPayload(),null,2);var name=((window.project||project).name||'bs-project').replace(/[^a-zA-Z0-9\u0600-\u06FF_-]+/g,'-');var filename=name+'-backup.json';try{if(window.showSaveFilePicker){var handle=await window.showSaveFilePicker({suggestedName:filename,types:[{description:'BS Project Backup',accept:{'application/json':['.json']}}]});var writable=await handle.createWritable();await writable.write(data);await writable.close()}else{var blob=new Blob([data],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000)}closeSaveModal();showToast(currentLang()==='ar'?'تم حفظ النسخة الاحتياطية بنجاح':'Backup saved successfully')}catch(error){if(error&&error.name!=='AbortError')showToast(currentLang()==='ar'?'تعذر حفظ الملف. حاول مرة أخرى.':'Could not save the file. Please try again.')}}
   window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredInstallPrompt=e});
   window.addEventListener('DOMContentLoaded',function(){
     window.saveProject=function(){openSaveModal()};
@@ -129,10 +130,7 @@ self.addEventListener('fetch', event => {
           return new Response(enhanced, {
             status: response.status,
             statusText: response.statusText,
-            headers: {
-              'Content-Type': 'text/html; charset=utf-8',
-              'Cache-Control': 'no-store, must-revalidate'
-            }
+            headers: {'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store, must-revalidate'}
           });
         })
         .catch(async () => {
